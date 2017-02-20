@@ -14,6 +14,7 @@ public class Scrabble {
     /**
      * @param args the command line arguments
      */
+    //prueba de commit
     public static void main(String[] args) {
         // TODO code application logic here
     }

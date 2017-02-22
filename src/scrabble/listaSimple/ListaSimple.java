@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package scrabble.listaSimple;
+import java.io.IOException;
+import java.io.PrintWriter;
+import scrabble.listaCircular.ListaCircularNodo;
 import scrabble.listaSimple.ListaSimpleNodo;
 
 /**
@@ -21,12 +24,19 @@ public class ListaSimple {
     public void insertEnd(String text){
         this.insertEnd(new ListaSimpleNodo(text));        
     };
+    
+    public void insertEnd(String text,int valor){
+        this.insertEnd(new ListaSimpleNodo(text,valor));        
+    };
     public void insertFirst(String text){
         this.insertFirst(new ListaSimpleNodo(text));        
     };
+    public void insertFirst(String text,int valor){
+        this.insertFirst(new ListaSimpleNodo(text,valor));        
+    };
     
     /*-------INSERTS----------------*/    
-    private boolean insertFirst(ListaSimpleNodo nuevoNodo){       
+    public boolean insertFirst(ListaSimpleNodo nuevoNodo){       
         if (first==null){
             first=nuevoNodo;
         }else{                       
@@ -36,7 +46,7 @@ public class ListaSimple {
         return true;
     };
     
-    private boolean insertEnd(ListaSimpleNodo nuevoNodo){       
+    public boolean insertEnd(ListaSimpleNodo nuevoNodo){       
         if (first==null){
             first=nuevoNodo;
         }else{                       
@@ -49,7 +59,8 @@ public class ListaSimple {
     public ListaSimpleNodo deleteFirst(){       
         if (this.first!=null){
             ListaSimpleNodo aux = this.first;            
-            this.first=first.sig;
+            this.first=this.first.sig;
+            aux.sig=null;
             return aux;
         }
         return null;               
@@ -75,12 +86,44 @@ public class ListaSimple {
         return null;               
     };
     
-    public void printOnConsole(){        
+    public void printOnConsole(String prefix){
         ListaSimpleNodo aux = first; 
         while (aux!=null){                
-            System.out.println("-"+aux.text);
+            System.out.println(prefix+aux.text);
             aux=aux.sig;              
-        }         
+        }   
+    }
+    public void printOnConsole(){        
+        this.printOnConsole("");
+    }
+    
+    public void generateGraphviz(){
+        this.generateGraphviz(this.toString());
+    }
+    public void generateGraphviz(String _url){
+        String url=_url;
+        try{
+            PrintWriter writer = new PrintWriter(url+".txt", "UTF-8");
+            writer.print( "digraph G\n {\n");            
+            
+            ListaSimpleNodo aux = first; 
+            while (aux!=null){                              
+                writer.println("\""+aux.toString()+"\"");            
+                writer.println(" [label=\""+aux.text+"\"]\n");                
+                if (aux.sig!=null){
+                    writer.println("\""+aux.toString()+"\""+"->"+"\""+aux.sig.toString()+"\"");
+                }                
+                aux=aux.sig;              
+            }                                
+            writer.print( "\n}");
+            
+            Runtime.getRuntime().exec("dot -Tjpg "+url+".txt -o "+url+".jpg");
+            
+           
+            writer.close();
+        } catch (IOException e) {
+           // do something
+        }
     }
     
     

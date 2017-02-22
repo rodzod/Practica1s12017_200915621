@@ -10,7 +10,7 @@ package scrabble.listaSimple;
  * @author rodzod
  */
 public class ListaSimpleNodo {
-    public Object data;
+    public int valor;
     public ListaSimpleNodo sig;   
     public String text; 
     public ListaSimpleNodo(){
@@ -18,6 +18,11 @@ public class ListaSimpleNodo {
     }
     public ListaSimpleNodo(String text){
         this.sig=null;
+        this.text=text;
+    }
+    public ListaSimpleNodo(String text,int valor){
+        this.sig=null;
+        this.valor=valor;
         this.text=text;
     }
 }
